@@ -1,0 +1,130 @@
+[
+  {
+    "Id": 1,
+    "projectId": 1,
+    "title": "Pre-visualization Complete",
+    "dueDate": "2024-01-25",
+    "completed": true,
+    "description": "Initial concept sketches and 3D previz for portal sequence approved by client."
+  },
+  {
+    "Id": 2,
+    "projectId": 1,
+    "title": "Base 3D Models Delivered",
+    "dueDate": "2024-02-05",
+    "completed": true,
+    "description": "All base geometry and portal structure models completed and approved."
+  },
+  {
+    "Id": 3,
+    "projectId": 1,
+    "title": "Particle System Integration",
+    "dueDate": "2024-02-20",
+    "completed": false,
+    "description": "Implement energy particle systems and magical effects integration."
+  },
+  {
+    "Id": 4,
+    "projectId": 1,
+    "title": "Final Compositing",
+    "dueDate": "2024-03-10",
+    "completed": false,
+    "description": "Complete compositing and color grading for final delivery."
+  },
+  {
+    "Id": 5,
+    "projectId": 2,
+    "title": "Product Scan Complete",
+    "dueDate": "2024-01-15",
+    "completed": true,
+    "description": "High-resolution 3D scan of Nike Air Max completed with texture maps."
+  },
+  {
+    "Id": 6,
+    "projectId": 2,
+    "title": "Animation Sequences",
+    "dueDate": "2024-02-10",
+    "completed": true,
+    "description": "Dynamic transformation animations completed and approved."
+  },
+  {
+    "Id": 7,
+    "projectId": 2,
+    "title": "Client Review Round 1",
+    "dueDate": "2024-02-25",
+    "completed": false,
+    "description": "First client review of complete commercial sequence."
+  },
+  {
+    "Id": 8,
+    "projectId": 3,
+    "title": "Environment Assets",
+    "dueDate": "2023-12-20",
+    "completed": true,
+    "description": "Cyberpunk cityscape models and textures completed."
+  },
+  {
+    "Id": 9,
+    "projectId": 3,
+    "title": "Lighting and Atmosphere",
+    "dueDate": "2024-01-05",
+    "completed": true,
+    "description": "Neon lighting setup and atmospheric effects implementation."
+  },
+  {
+    "Id": 10,
+    "projectId": 3,
+    "title": "Character Integration",
+    "dueDate": "2024-01-20",
+    "completed": true,
+    "description": "Character placement and enhancement work completed."
+  },
+  {
+    "Id": 11,
+    "projectId": 4,
+    "title": "Concept Development",
+    "dueDate": "2024-02-01",
+    "completed": false,
+    "description": "Develop creative concept and storyboard for Tesla reveal."
+  },
+  {
+    "Id": 12,
+    "projectId": 4,
+    "title": "3D Model Preparation",
+    "dueDate": "2024-02-15",
+    "completed": false,
+    "description": "Prepare and optimize Tesla Model Y 3D assets for animation."
+  },
+  {
+    "Id": 13,
+    "projectId": 5,
+    "title": "Decay Effect Tests",
+    "dueDate": "2024-01-30",
+    "completed": false,
+    "description": "Test and refine environmental decay and transformation effects."
+  },
+  {
+    "Id": 14,
+    "projectId": 5,
+    "title": "Creature Enhancement",
+    "dueDate": "2024-02-15",
+    "completed": false,
+    "description": "Apply creature enhancement and integration work for Upside Down sequences."
+  },
+  {
+    "Id": 15,
+    "projectId": 6,
+    "title": "UI Design Phase",
+    "dueDate": "2024-01-20",
+    "completed": true,
+    "description": "Design and create holographic UI elements for Vision Pro demonstration."
+  },
+  {
+    "Id": 16,
+    "projectId": 6,
+    "title": "Spatial Computing VFX",
+    "dueDate": "2024-02-05",
+    "completed": false,
+    "description": "Implement spatial computing visualizations and mixed reality effects."
+  }
+]

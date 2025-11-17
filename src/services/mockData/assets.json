@@ -1,0 +1,102 @@
+[
+  {
+    "Id": 1,
+    "projectId": 1,
+    "fileName": "portal_base_model.fbx",
+    "fileType": "model/fbx",
+    "fileSize": 45678912,
+    "uploadDate": "2024-01-11T09:30:00.000Z",
+    "thumbnailUrl": null,
+    "tags": ["3d-model", "portal", "base-geometry"]
+  },
+  {
+    "Id": 2,
+    "projectId": 1,
+    "fileName": "energy_particles.png",
+    "fileType": "image/png",
+    "fileSize": 8234567,
+    "uploadDate": "2024-01-11T10:15:00.000Z",
+    "thumbnailUrl": null,
+    "tags": ["texture", "particles", "energy", "alpha"]
+  },
+  {
+    "Id": 3,
+    "projectId": 1,
+    "fileName": "portal_animation_test.mp4",
+    "fileType": "video/mp4",
+    "fileSize": 123456789,
+    "uploadDate": "2024-01-12T14:20:00.000Z",
+    "thumbnailUrl": null,
+    "tags": ["animation", "test", "preview", "portal"]
+  },
+  {
+    "Id": 4,
+    "projectId": 2,
+    "fileName": "nike_air_max_hero.obj",
+    "fileType": "model/obj",
+    "fileSize": 34567890,
+    "uploadDate": "2024-01-06T11:45:00.000Z",
+    "thumbnailUrl": null,
+    "tags": ["product", "shoe", "hero", "3d-scan"]
+  },
+  {
+    "Id": 5,
+    "projectId": 2,
+    "fileName": "product_textures_4k.jpg",
+    "fileType": "image/jpeg",
+    "fileSize": 12345678,
+    "uploadDate": "2024-01-06T12:30:00.000Z",
+    "thumbnailUrl": null,
+    "tags": ["texture", "4k", "product", "diffuse"]
+  },
+  {
+    "Id": 6,
+    "projectId": 3,
+    "fileName": "cyberpunk_city_wide.blend",
+    "fileType": "application/blender",
+    "fileSize": 67890123,
+    "uploadDate": "2023-12-16T15:10:00.000Z",
+    "thumbnailUrl": null,
+    "tags": ["environment", "city", "cyberpunk", "blender"]
+  },
+  {
+    "Id": 7,
+    "projectId": 3,
+    "fileName": "neon_lighting_setup.exr",
+    "fileType": "image/exr",
+    "fileSize": 23456789,
+    "uploadDate": "2023-12-17T09:20:00.000Z",
+    "thumbnailUrl": null,
+    "tags": ["lighting", "hdri", "neon", "environment"]
+  },
+  {
+    "Id": 8,
+    "projectId": 4,
+    "fileName": "tesla_model_y_clean.max",
+    "fileType": "application/3dsmax",
+    "fileSize": 56789012,
+    "uploadDate": "2024-01-21T10:30:00.000Z",
+    "thumbnailUrl": null,
+    "tags": ["automotive", "tesla", "clean", "3ds-max"]
+  },
+  {
+    "Id": 9,
+    "projectId": 5,
+    "fileName": "upside_down_decay.png",
+    "fileType": "image/png",
+    "fileSize": 9876543,
+    "uploadDate": "2024-01-13T16:45:00.000Z",
+    "thumbnailUrl": null,
+    "tags": ["decay", "texture", "upside-down", "alpha"]
+  },
+  {
+    "Id": 10,
+    "projectId": 6,
+    "fileName": "vision_pro_ui_elements.svg",
+    "fileType": "image/svg+xml",
+    "fileSize": 1234567,
+    "uploadDate": "2024-01-09T14:15:00.000Z",
+    "thumbnailUrl": null,
+    "tags": ["ui", "interface", "vector", "apple"]
+  }
+]
