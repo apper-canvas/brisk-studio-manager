@@ -33,7 +33,7 @@ function Homepage() {
       });
 
       // Invoke OpenAI edge function
-      const result = await apperClient.functions.invoke(import.meta.env.VITE_OPENAI, {
+      const result = await apperClient.functions.invoke(import.meta.env.VITE_OPENAI_1, {
         body: JSON.stringify({
           prompt: prompt.trim(),
           type: chatType,
