@@ -1,6 +1,9 @@
 import { createBrowserRouter } from "react-router-dom";
 import { lazy, Suspense } from "react";
-import Layout from "@/components/organisms/Layout";
+import Layout from '@/components/organisms/Layout'
+
+// Lazy load page components
+const Homepage = lazy(() => import('@/components/pages/Homepage'))
 
 // Lazy load all page components
 const Projects = lazy(() => import("@/components/pages/Projects"));
@@ -18,9 +21,18 @@ const LoadingFallback = () => (
     </div>
   </div>
 );
-
 const mainRoutes = [
   {
+    path: "",
+    index: true,
+    element: (
+      <Suspense fallback={<LoadingFallback />}>
+        <Homepage />
+      </Suspense>
+    )
+  },
+  {
+    path: "assets",
     path: "",
     index: true,
     element: <Suspense fallback={<LoadingFallback />}><Projects /></Suspense>

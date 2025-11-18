@@ -1,18 +1,24 @@
 import { NavLink } from "react-router-dom";
-import ApperIcon from "@/components/ApperIcon";
+import React from "react";
 import { cn } from "@/utils/cn";
+import ApperIcon from "@/components/ApperIcon";
 
 const Sidebar = () => {
   const navItems = [
     {
-      name: "Projects",
-      path: "/projects",
-      icon: "FolderOpen"
+      name: 'Home',
+      path: '/',
+      icon: 'Home'
+    },
+    {
+      name: 'Projects',
+      path: '/projects',
+      icon: 'FolderOpen'
     },
     {
       name: "Assets",
       path: "/assets", 
-      icon: "Image"
+      icon: 'FolderOpen'
     },
     {
       name: "Timeline",
