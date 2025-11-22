@@ -1,11 +1,9 @@
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-
 function App() {
-  const name = data.name;
   return (
     <>
-      <ToastContainer 
+      <ToastContainer
         position="top-right"
         autoClose={3000}
         hideProgressBar={false}
