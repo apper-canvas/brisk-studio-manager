@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { toast } from 'react-toastify';
 import ApperIcon from '@/components/ApperIcon';
 import Button from '@/components/atoms/Button';
@@ -12,8 +12,9 @@ function Homepage() {
   const [model, setModel] = useState('gpt-3.5-turbo');
   const [maxTokens, setMaxTokens] = useState(1000);
   const [temperature, setTemperature] = useState(0.7);
-
-  const handleSubmit = async (e) => {
+  const [uploadLoading, setUploadLoading] = useState(false);
+  const fileInputRef = useRef(null);
+const handleSubmit = async (e) => {
     e.preventDefault();
     
     if (!prompt.trim()) {
@@ -33,7 +34,7 @@ function Homepage() {
       });
 
       // Invoke OpenAI edge function
-      const result = await apperClient.functions.invoke(import.meta.env.VITE_OPENAI_1, {
+      const result = await apperClient.functions.invoke(import.meta.env.VITE_OPENAI, {
         body: JSON.stringify({
           prompt: prompt.trim(),
           type: chatType,
@@ -58,6 +59,66 @@ function Homepage() {
       toast.error('Failed to connect to AI service');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleImageUpload = async () => {
+    const file = fileInputRef.current?.files?.[0];
+    
+    if (!file) {
+      toast.error('Please select an image file');
+      return;
+    }
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      toast.error('Please select a valid image file');
+      return;
+    }
+
+    // Validate file size (e.g., max 10MB)
+    if (file.size > 10 * 1024 * 1024) {
+      toast.error('Image file is too large (max 10MB)');
+      return;
+    }
+
+    setUploadLoading(true);
+
+    try {
+      // Initialize ApperClient
+      const { ApperClient } = window.ApperSDK;
+      const apperClient = new ApperClient({
+        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+      });
+
+      // Create FormData for file upload
+      const formData = new FormData();
+      formData.append('image', file);
+
+      // Invoke upload-large-image edge function
+      const result = await apperClient.functions.invoke(import.meta.env.VITE_UPLOAD_LARGE_IMAGE, {
+        body: formData,
+        headers: {
+          // Don't set Content-Type header - let browser set it with boundary for FormData
+        }
+      });
+
+      if (result.success) {
+        toast.success('Image uploaded successfully');
+        // Reset file input
+        if (fileInputRef.current) {
+          fileInputRef.current.value = '';
+        }
+      } else {
+        console.info(`apper_info: Got an error in this function: ${import.meta.env.VITE_UPLOAD_LARGE_IMAGE}. The response body is: ${JSON.stringify(result)}.`);
+        toast.error(result.error || 'Failed to upload image');
+      }
+    } catch (error) {
+      console.info(`apper_info: Got this error an this function: ${import.meta.env.VITE_UPLOAD_LARGE_IMAGE}. The error is: ${error.message}`);
+      toast.error('Failed to connect to upload service');
+    } finally {
+      setUploadLoading(false);
     }
   };
 
@@ -253,6 +314,58 @@ function Homepage() {
                 </p>
               </div>
             )}
+          </div>
+        </div>
+{/* Image Upload Section */}
+        <div className="max-w-4xl mx-auto mb-12">
+          <div className="bg-surface/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-8">
+            <div className="text-center mb-6">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-r from-secondary to-accent flex items-center justify-center">
+                <ApperIcon name="Upload" size={24} className="text-white" />
+              </div>
+              <h2 className="text-2xl font-bold bg-gradient-to-r from-slate-100 to-slate-300 bg-clip-text text-transparent mb-2">
+                Upload Large Image
+              </h2>
+              <p className="text-slate-400">
+                Select and upload large image files using our edge function
+              </p>
+            </div>
+
+            <div className="space-y-4">
+              <div className="flex flex-col items-center space-y-4">
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  className="block w-full text-sm text-slate-400
+                    file:mr-4 file:py-3 file:px-6
+                    file:rounded-lg file:border-0
+                    file:text-sm file:font-medium
+                    file:bg-primary/10 file:text-primary
+                    hover:file:bg-primary/20 file:cursor-pointer
+                    border border-slate-600 rounded-lg p-3
+                    focus:outline-none focus:ring-2 focus:ring-primary/50"
+                />
+                
+                <Button
+                  onClick={handleImageUpload}
+                  disabled={uploadLoading}
+                  className="w-full max-w-xs bg-gradient-to-r from-secondary to-accent hover:from-secondary/90 hover:to-accent/90 disabled:opacity-50"
+                >
+                  {uploadLoading ? (
+                    <>
+                      <ApperIcon name="Loader2" size={16} className="animate-spin mr-2" />
+                      Uploading...
+                    </>
+                  ) : (
+                    <>
+                      <ApperIcon name="Upload" size={16} className="mr-2" />
+                      Upload Image
+                    </>
+                  )}
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
 
