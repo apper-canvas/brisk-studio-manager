@@ -1,11 +1,12 @@
-import { useState, useRef } from 'react';
-import { toast } from 'react-toastify';
-import ApperIcon from '@/components/ApperIcon';
-import Button from '@/components/atoms/Button';
-import Loading from '@/components/ui/Loading';
+import React, { useRef, useState } from "react";
+import { toast } from "react-toastify";
+import ApperIcon from "@/components/ApperIcon";
+import Loading from "@/components/ui/Loading";
+import Button from "@/components/atoms/Button";
+import Timeline from "@/components/pages/Timeline";
 
 function Homepage() {
-  const [prompt, setPrompt] = useState('');
+const [prompt, setPrompt] = useState('');
   const [response, setResponse] = useState('');
   const [loading, setLoading] = useState(false);
   const [chatType, setChatType] = useState('chat');
@@ -13,6 +14,8 @@ function Homepage() {
   const [maxTokens, setMaxTokens] = useState(1000);
   const [temperature, setTemperature] = useState(0.7);
   const [uploadLoading, setUploadLoading] = useState(false);
+  const [generationMode, setGenerationMode] = useState('text'); // 'text' or 'image'
+  const [generatedImage, setGeneratedImage] = useState('');
   const fileInputRef = useRef(null);
 const handleSubmit = async (e) => {
     e.preventDefault();
@@ -127,12 +130,55 @@ const handleSubmit = async (e) => {
     setResponse('');
   };
 
-  const chatTypeOptions = [
+const chatTypeOptions = [
     { value: 'chat', label: 'Chat', description: 'Interactive conversation' },
     { value: 'completion', label: 'Completion', description: 'Text completion' },
     { value: 'analysis', label: 'Analysis', description: 'Content analysis' },
     { value: 'generation', label: 'Generation', description: 'Creative content' }
   ];
+
+  const handleImageGeneration = async (e) => {
+    e.preventDefault();
+    if (!prompt.trim()) {
+      toast.error('Please enter a prompt');
+      return;
+    }
+
+    setLoading(true);
+    setGeneratedImage('');
+    
+    try {
+      const { ApperClient } = window.ApperSDK;
+      const apperClient = new ApperClient({
+        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+      });
+
+      const result = await apperClient.functions.invoke(import.meta.env.VITE_TEXT_TO_IMAGE, {
+        body: JSON.stringify({
+          prompt: prompt.trim(),
+          width: 1024,
+          height: 1024
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (result.success) {
+        setGeneratedImage(result.data.image);
+        toast.success('Image generated successfully!');
+      } else {
+        console.info(`apper_info: Got an error in this function: ${import.meta.env.VITE_TEXT_TO_IMAGE}. The response body is: ${JSON.stringify(result)}.`);
+        toast.error(result.error || 'Failed to generate image');
+      }
+    } catch (error) {
+      console.info(`apper_info: Got this error in this function: ${import.meta.env.VITE_TEXT_TO_IMAGE}. The error is: ${error.message}`);
+      toast.error('Failed to generate image');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const modelOptions = [
     { value: 'gpt-3.5-turbo', label: 'GPT-3.5 Turbo' },
@@ -164,20 +210,50 @@ const handleSubmit = async (e) => {
               <label className="block text-sm font-medium text-slate-300 mb-2">
                 Type
               </label>
-              <select
-                value={chatType}
-                onChange={(e) => setChatType(e.target.value)}
-                className="w-full px-3 py-2 bg-background border border-slate-600 rounded-md text-slate-100 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-              >
-                {chatTypeOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-              <p className="text-xs text-slate-500 mt-1">
-                {chatTypeOptions.find(opt => opt.value === chatType)?.description}
-              </p>
+{/* Generation Mode Toggle */}
+              <div className="flex space-x-2 mb-4">
+                <button
+                  type="button"
+                  onClick={() => setGenerationMode('text')}
+                  className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                    generationMode === 'text'
+                      ? 'bg-primary text-white'
+                      : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                  }`}
+                >
+                  Text Generation
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setGenerationMode('image')}
+                  className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                    generationMode === 'image'
+                      ? 'bg-primary text-white'
+                      : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                  }`}
+                >
+                  Image Generation
+                </button>
+              </div>
+
+              {generationMode === 'text' && (
+                <select
+                  value={chatType}
+                  onChange={(e) => setChatType(e.target.value)}
+                  className="w-full px-3 py-2 bg-background border border-slate-600 rounded-md text-slate-100 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                >
+                  {chatTypeOptions.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              )}
+              {generationMode === 'text' && (
+                <p className="text-xs text-slate-500 mt-1">
+                  {chatTypeOptions.find(opt => opt.value === chatType)?.description}
+                </p>
+              )}
             </div>
 
             {/* Model */}
@@ -231,10 +307,10 @@ const handleSubmit = async (e) => {
           </div>
         </div>
 
-        {/* Chat Interface */}
+{/* Generation Interface */}
         <div className="bg-surface rounded-lg border border-slate-700 overflow-hidden">
           {/* Input Form */}
-          <form onSubmit={handleSubmit} className="p-6 border-b border-slate-700">
+          <form onSubmit={generationMode === 'text' ? handleSubmit : handleImageGeneration} className="p-6 border-b border-slate-700">
             <div className="mb-4">
               <label className="block text-sm font-medium text-slate-300 mb-2">
                 Your Prompt
@@ -289,12 +365,12 @@ const handleSubmit = async (e) => {
 
           {/* Response Area */}
           <div className="p-6">
-            {loading ? (
+{loading ? (
               <div className="flex items-center justify-center py-8">
                 <Loading />
                 <span className="ml-3 text-slate-400">AI is thinking...</span>
               </div>
-            ) : response ? (
+            ) : generationMode === 'text' && response ? (
               <div>
                 <div className="flex items-center mb-3">
                   <ApperIcon name="Bot" size={20} className="text-primary mr-2" />
@@ -306,11 +382,34 @@ const handleSubmit = async (e) => {
                   </pre>
                 </div>
               </div>
+            ) : generationMode === 'image' && generatedImage ? (
+              <div>
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center">
+                    <ApperIcon name="Image" size={20} className="text-primary mr-2" />
+                    <h3 className="text-lg font-semibold text-slate-100">Generated Image</h3>
+                  </div>
+                  <a
+                    href={generatedImage}
+                    download="generated-image.png"
+                    className="px-3 py-1 bg-primary text-white rounded-md text-sm hover:bg-primary/80 transition-colors"
+                  >
+                    Download
+                  </a>
+                </div>
+                <div className="bg-background rounded-lg p-4 border border-slate-600">
+                  <img
+                    src={generatedImage}
+                    alt="Generated"
+                    className="max-w-full h-auto rounded-lg mx-auto"
+                  />
+                </div>
+              </div>
             ) : (
               <div className="text-center py-8">
-                <ApperIcon name="MessageCircle" size={48} className="text-slate-600 mx-auto mb-3" />
+                <ApperIcon name={generationMode === 'image' ? "Image" : "MessageCircle"} size={48} className="text-slate-600 mx-auto mb-3" />
                 <p className="text-slate-500">
-                  Enter a prompt above and click Generate to get started
+                  Enter a prompt above and click {generationMode === 'image' ? 'Generate Image' : 'Generate'} to get started
                 </p>
               </div>
             )}
