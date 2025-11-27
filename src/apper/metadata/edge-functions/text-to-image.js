@@ -113,9 +113,7 @@ export default apper.serve(async (req) => {
 
     const base64String = await generateBase64Image(prompt, apiKey);
     
-    console.log('VGbase64String', base64String)
-
-    const contentType = 'image/png';
+const contentType = 'image/png';
     const filename = 'image_'+ new Date().toISOString() +'.png';
     const purpose = 'RecordAttachment';
 
@@ -126,7 +124,7 @@ export default apper.serve(async (req) => {
         purpose: purpose,
         contentType: contentType
       },
-      (progress) => `console.log(Progress: ${progress.toFixed(1)}%)`
+      (progress) => console.log(`Progress: ${progress.toFixed(1)}%`)
     );
 
     // Return successful response
