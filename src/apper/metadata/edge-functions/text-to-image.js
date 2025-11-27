@@ -112,6 +112,8 @@ export default apper.serve(async (req) => {
     }
 
     const base64String = await generateBase64Image(prompt, apiKey);
+    
+    console.log('VGbase64String', base64String)
 
     const contentType = 'image/png';
     const filename = 'image_'+ new Date().toISOString() +'.png';
