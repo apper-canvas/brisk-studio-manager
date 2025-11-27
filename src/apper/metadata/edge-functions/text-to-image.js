@@ -113,12 +113,17 @@ export default apper.serve(async (req) => {
 
     const base64String = await generateBase64Image(prompt, apiKey);
 
-    // const contentType = 'application/pdf';
-    // const filename = 'document_from_url.pdf';
+    const contentType = 'image/png';
+    const filename = 'image_'+ new Date().toISOString() +'.png';
     const purpose = 'RecordAttachment';
 
     const result = await apperClient.storage.uploadFile(
-      base64String, null,
+      base64String, 
+       {
+        filename: filename,
+        purpose: purpose,
+        contentType: contentType
+      },
       (progress) => `console.log(Progress: ${progress.toFixed(1)}%)`
     );
 
