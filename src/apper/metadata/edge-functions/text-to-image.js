@@ -112,13 +112,22 @@ export default apper.serve(async (req) => {
     }
 
     const base64String = await generateBase64Image(prompt, apiKey);
-
+    const result = await apperClient.storage.uploadFile(
+      base64DataUri,
+      {
+        filename: filename,
+        purpose: purpose,
+        contentType: contentType
+      },
+      (progress) => `console.log(Progress: ${progress.toFixed(1)}%)`
+    );
 
     // Return successful response
     return new Response(
       JSON.stringify({
         success: true,
         data: {
+          result: result,
           image: base64String,
           prompt: prompt.trim(),
           width: width,
