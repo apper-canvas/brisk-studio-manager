@@ -118,12 +118,7 @@ export default apper.serve(async (req) => {
     const purpose = 'RecordAttachment';
 
     const result = await apperClient.storage.uploadFile(
-      base64String,
-      {
-        filename: filename,
-        purpose: purpose,
-        contentType: contentType
-      },
+      base64String, null,
       (progress) => `console.log(Progress: ${progress.toFixed(1)}%)`
     );
 
