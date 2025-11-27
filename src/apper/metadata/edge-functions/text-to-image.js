@@ -111,37 +111,35 @@ export default apper.serve(async (req) => {
       );
     }
 
-// Generate image using the existing function
-    const dataUrl = await generateBase64Image(prompt, apiKey);
+    const base64String = await generateBase64Image(prompt, apiKey);
     
-    if (!dataUrl) {
-      return new Response(
-        JSON.stringify({
-          success: false,
-          error: 'Failed to generate image'
-        }),
-        { 
-          status: 422, 
-          headers: { 'Content-Type': 'application/json' } 
-        }
-      );
-    }
+    console.log('VGbase64String', base64String)
 
-    // Extract base64 string from data URL
-    const base64String = dataUrl.split(',')[1];
+    const contentType = 'image/png';
+    const filename = 'image_'+ new Date().toISOString() +'.png';
+    const purpose = 'RecordAttachment';
+
+    const result = await apperClient.storage.uploadFile(
+      base64String, 
+       {
+        filename: filename,
+        purpose: purpose,
+        contentType: contentType
+      },
+      (progress) => `console.log(Progress: ${progress.toFixed(1)}%)`
+    );
 
     // Return successful response
     return new Response(
       JSON.stringify({
         success: true,
         data: {
-          image: dataUrl,
-          base64: base64String,
+          result: result,
+          image: base64String,
           prompt: prompt.trim(),
           width: width,
           height: height,
-          timestamp: new Date().toISOString(),
-          source: 'CLIPDROP'
+          timestamp: new Date().toISOString()
         }
       }),
       { 
